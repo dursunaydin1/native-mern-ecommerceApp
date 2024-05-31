@@ -67,8 +67,11 @@ const getAdmin = async (req, res) => {
   }
 };
 const getAllUsers = async (req, res) => {
+  const query = req.query.latest;
   try {
-    const users = await User.find();
+    const users = query
+      ? await User.find().sort({ _id: -1 }).limit(3)
+      : await User.find();
 
     res.status(200).json({
       message: "Users have been fetched successfully",
@@ -83,4 +86,41 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { updateUser, deleteUser, getAdmin, getAllUsers };
+const getUserStats = async (req, res) => {
+  try {
+    const date = new Date();
+    const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+
+    const data = await User.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json({
+      message: "User stats have been fetched successfully",
+      data: data,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occured aquiring user stats",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = {
+  updateUser,
+  deleteUser,
+  getAdmin,
+  getAllUsers,
+  getUserStats,
+};
