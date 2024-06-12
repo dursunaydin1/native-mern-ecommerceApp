@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 import { categoriesData } from "../../data/CategoriesData";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 
 const Categories = () => {
@@ -21,7 +21,7 @@ const Categories = () => {
               style={styles.catContainer}
               onPress={() => navigation.navigate(item.path)}
             >
-              <FontAwesome
+              <AntDesign
                 name={item.icon}
                 size={18}
                 color="black"
