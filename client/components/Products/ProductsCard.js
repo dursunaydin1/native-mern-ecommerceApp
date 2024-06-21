@@ -14,8 +14,8 @@ const ProductsCard = ({ item }) => {
 
   //more details btn
   const handleMoreButton = () => {
-    navigation.navigate("productDetails", { _id: id });
-    console.log(id);
+    navigation.navigate("productDetails", { _id: item._id });
+    console.log(item._id);
   };
 
   //add to cart btn
@@ -24,14 +24,14 @@ const ProductsCard = ({ item }) => {
   };
 
   return (
-    <View>
-      <View style={styles.card}>
-        <Image style={styles.cardImage} source={{ uri: item?.imageUrl }} />
+    <View style={styles.card}>
+      <Image style={styles.cardImage} source={{ uri: item?.imageUrl }} />
+      <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{item?.name}</Text>
         <Text style={styles.cardDescription}>
           {item?.description.substring(0, 30) + "...more"}
         </Text>
-        <View style={styles.BtnContainer}>
+        <View style={styles.bottomContainer}>
           <TouchableOpacity
             style={styles.btn}
             onPress={() => handleMoreButton(item._id)}
@@ -58,41 +58,44 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     width: "45%",
     backgroundColor: "white",
-    justifyContent: "center",
+    borderRadius: 10,
+    overflow: "hidden",
   },
   cardImage: {
     width: "100%",
     height: 120,
-    marginBottom: 10,
+    marginVertical: 10,
+    resizeMode: "contain",
+  },
+  cardContent: {
+    padding: 10,
   },
   cardTitle: {
     fontWeight: "bold",
-    fontSize: 10,
+    fontSize: 14,
     marginBottom: 5,
   },
   cardDescription: {
-    fontSize: 10,
+    fontSize: 12,
     textAlign: "left",
+    marginBottom: 10,
   },
-  BottomContainer: {
-    marginTop: 5,
-    alignItems: "center",
+  bottomContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   btn: {
     backgroundColor: "#000000",
-    height: 20,
-    width: 75,
+    height: 30,
+    width: "48%",
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
   },
-
   btnCart: {
     backgroundColor: "orange",
-    height: 20,
-    width: 75,
+    height: 30,
+    width: "48%",
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
@@ -101,6 +104,6 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 10,
+    fontSize: 12,
   },
 });
