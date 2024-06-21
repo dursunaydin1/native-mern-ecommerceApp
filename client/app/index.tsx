@@ -16,7 +16,7 @@ export default function Page() {
           component={Home}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="productDetail" component={ProductDetail} />
+        <Stack.Screen name="productDetails" component={ProductDetail} />
         <Stack.Screen name="About" component={About} />
       </Stack.Navigator>
     </NavigationContainer>
