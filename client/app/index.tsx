@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../screens/Home";
 import About from "../screens/About";
 import Cart from "../screens/Cart";
+import Checkout from "../screens/Checkout";
+import Payments from "../screens/Payments";
 import ProductDetail from "../screens/ProductDetails";
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +21,8 @@ export default function Page() {
         />
         <Stack.Screen name="productDetails" component={ProductDetail} />
         <Stack.Screen name="cart" component={Cart} />
+        <Stack.Screen name="checkout" component={Checkout} />
+        <Stack.Screen name="payment" component={Payments} />
         <Stack.Screen name="mobile" component={About} />
       </Stack.Navigator>
     </NavigationContainer>
