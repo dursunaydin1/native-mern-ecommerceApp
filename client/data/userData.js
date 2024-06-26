@@ -6,4 +6,6 @@ export const userData = {
   password: "1234567890",
   address: "mumbai",
   contact: "1234567890",
+  city: "Samsun",
+  contact: "1234567890",
 };

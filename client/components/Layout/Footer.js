@@ -22,16 +22,16 @@ const Footer = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.menuContainer}
-        onPress={() => alert("Notification Page")}
+        onPress={() => navigation.navigate("notifications")}
       >
         <AntDesign
           name="bells"
-          style={[styles.icon, route.name === "notification" && styles.active]}
+          style={[styles.icon, route.name === "notifications" && styles.active]}
         />
         <Text
           style={[
             styles.iconText,
-            route.name === "notification" && styles.active,
+            route.name === "notifications" && styles.active,
           ]}
         >
           Notification
