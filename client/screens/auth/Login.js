@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   link: {
-    color: "red",
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });
