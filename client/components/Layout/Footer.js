@@ -65,7 +65,10 @@ const Footer = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.menuContainer}
-        onPress={() => alert("Logout Page")}
+        onPress={() => {
+          alert("Logout Successfully");
+          navigation.navigate("login");
+        }}
       >
         <AntDesign name="logout" style={styles.icon} />
         <Text style={styles.iconText}>Logout</Text>
