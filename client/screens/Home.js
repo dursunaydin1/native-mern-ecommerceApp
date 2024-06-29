@@ -4,7 +4,7 @@ import Layout from "../components/Layout/Layout";
 import Categories from "../components/category/Categories";
 import Banner from "../components/Banner/Banner";
 import Products from "../components/Products/Products";
-import Header from "@/components/Layout/Header";
+import Header from "../../components/Layout/Header";
 
 const Home = () => {
   return (

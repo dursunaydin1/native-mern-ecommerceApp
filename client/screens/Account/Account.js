@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import Layout from "@/components/Layout/Layout";
+import Layout from ../../components/Layout/Layout";
 import { userData } from "../../data/userData";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
@@ -25,7 +25,7 @@ const Account = ({ navigation }) => {
             <AntDesign style={styles.icon} name="edit" />
             <Text style={styles.btnText}>Edit Profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("myorders", { id: userData._id })} >
             <AntDesign style={styles.icon} name="bars" />
             <Text style={styles.btnText}>My Orders</Text>
           </TouchableOpacity>

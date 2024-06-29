@@ -13,6 +13,7 @@ import Account from "../screens/Account/Account";
 import Profile from "../screens/Account/Profile";
 import Notifications from "../screens/Account/Notifications";
 import ProductDetail from "../screens/ProductDetails";
+import MyOrders from "../screens/Account/MyOrder";
 
 const Stack = createNativeStackNavigator();
 export default function Page() {
@@ -30,6 +31,7 @@ export default function Page() {
         <Stack.Screen name="payment" component={Payments} />
         <Stack.Screen name="account" component={Account} />
         <Stack.Screen name="profile" component={Profile} />
+        <Stack.Screen name="myorders" component={MyOrders} />
         <Stack.Screen name="notifications" component={Notifications} />
         <Stack.Screen
           name="login"

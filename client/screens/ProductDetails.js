@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { ProductsData } from "@/data/ProductsData";
-import Layout from "@/components/Layout/Layout";
+import { ProductsData } from "../data/ProductsData";
+import Layout from "../../components/Layout/Layout";
 
 const ProductDetails = ({ route }) => {
   const [pDetails, setPDetails] = useState({});
