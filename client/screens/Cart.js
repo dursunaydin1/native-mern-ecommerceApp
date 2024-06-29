@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { CartData } from "../data/CartData";
 import PriceTable from "../components/cart/PriceTable";
-import Layout from "../../components/Layout/Layout";
+import Layout from "../components/Layout/Layout";
 import CartItem from "@../../components/cart/CartItem";
 
 const Cart = ({ navigation }) => {
