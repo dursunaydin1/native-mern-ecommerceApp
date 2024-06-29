@@ -1,17 +1,29 @@
-const express = require("express");
-const dbConnection = require("./dbConnect/dbConnection");
-const app = express();
-const routes = require("./routes/routes.js");
+import express from "express";
+import colors from "colors";
+import morgan from "morgan";
+import cors from "cors";
+import dotenv from "dotenv";
 
+// dot env config
+dotenv.config();
+
+// rest object
+const app = express();
+
+// middleware
+app.use(morgan("dev"));
 app.use(express.json());
-// router konfiguration
-app.use("/", routes);
+app.use(cors());
+
+// route
 app.get("/", (req, res) => {
-  res.send("Project is running");
+  return res.status(200).send("<h1>Hello World</h1>");
 });
 
-// port konfiguration
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server is running on port: ${process.env.PORT || 5000}`);
-  dbConnection();
+// port
+const PORT = process.env.PORT || 5000;
+
+// listen
+app.listen(PORT, () => {
+  console.log(`Server is running on port: ${colors.bgRed(PORT)}`);
 });
