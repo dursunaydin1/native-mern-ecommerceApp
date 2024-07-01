@@ -4,6 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
 
 // dot env config
 dotenv.config();
@@ -20,6 +21,8 @@ app.use(express.json());
 app.use(cors());
 
 // route
+app.use("/api/v1/user", userRoutes);
+
 app.get("/", (req, res) => {
   return res.status(200).send("<h1>Hello World</h1>");
 });
