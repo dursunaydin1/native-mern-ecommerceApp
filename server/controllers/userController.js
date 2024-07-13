@@ -1,4 +1,6 @@
 import userModel from "../models/userModel.js";
+import { getDataUri } from "../utils/Features.js";
+import cloudinary from "cloudinary";
 
 export const registerController = async (req, res) => {
   try {
@@ -215,6 +217,36 @@ export const updatePasswordController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error While Update Password",
+      error,
+    });
+  }
+};
+
+// Update User Profile Picture
+export const updateUserProfilePictureController = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.user._id);
+    // file get from client photo
+    const file = getDataUri(req.file);
+    // delete previous profile picture
+    await cloudinary.v2.uploader.destroy(user.profilePic.public_id);
+    // update profile picture
+    const cdb = await cloudinary.v2.uploader.upload(file.content);
+    user.profilePic = {
+      public_id: cdb.public_id,
+      url: cdb.secure_url,
+    };
+    // save function
+    await user.save();
+    res.status(200).send({
+      success: true,
+      message: "Profile Picture Updated Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error while updating profile picture",
       error,
     });
   }

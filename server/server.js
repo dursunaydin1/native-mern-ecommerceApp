@@ -6,12 +6,20 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import cookieParser from "cookie-parser";
+import cloudinary from "cloudinary";
 
 // dot env config
 dotenv.config();
 
 // database connection
 connectDB();
+
+// cloudinary config
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_APIKEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 // rest object
 const app = express();

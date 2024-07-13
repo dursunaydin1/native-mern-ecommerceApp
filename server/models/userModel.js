@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     city: { type: String, required: [true, "Please Enter Your City"] },
     country: { type: String, required: [true, "Please Enter Your Country"] },
     phone: { type: String, required: [true, "Please Enter Your Phone"] },
-    profilePic: { type: String },
+    profilePic: { type: String, url: String },
   },
   { timestamps: true }
 );
