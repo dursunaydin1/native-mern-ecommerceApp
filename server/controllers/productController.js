@@ -96,3 +96,84 @@ export const createProductController = async (req, res) => {
     });
   }
 };
+
+// UPDATE PRODUCT
+export const updateProductController = async (req, res) => {
+  try {
+    //   find product
+    const product = await productModel.findById(req.params.id);
+    //   validation
+    if (!product) {
+      return res.status(404).send({
+        success: false,
+        message: "Product Not Found",
+      });
+    }
+    const { name, description, price, category, stock } = req.body;
+    //   validation and update
+    if (name) product.name = name;
+    if (description) product.description = description;
+    if (price) product.price = price;
+    if (category) product.category = category;
+    if (stock) product.stock = stock;
+    await product.save();
+    res.status(200).send({
+      success: true,
+      message: "Product Updated Successfully",
+      product,
+    });
+  } catch (error) {
+    // cast error || OBJECT ID ERROR
+    if (error.name === "CastError") {
+      return res.status(500).send({
+        success: false,
+        message: "Invalid Product ID",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error while updating product",
+      error,
+    });
+  }
+};
+
+// UPDATE PRODUCT IMAGE
+export const updateProductImageController = async (req, res) => {
+  try {
+    //   find product
+    const product = await productModel.findById(req.params.id);
+    //   validation
+    if (!product) {
+      return res.status(404).send({
+        success: false,
+        message: "Product Not Found",
+      });
+    }
+    if (!req.file) {
+      return res.status(400).send({
+        success: false,
+        message: "Please Select Image",
+      });
+    }
+    const file = getDataUri(req.file);
+    const cdb = await cloudinary.v2.uploader.upload(file.content);
+    const image = {
+      public_id: cgb.public_id,
+      url: cdb.secure_url,
+    };
+    product.images = [...product.images, image];
+    await product.save();
+    res.status(200).send({
+      success: true,
+      message: "Product Image Updated Successfully",
+      product,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error while updating product image",
+      error,
+    });
+  }
+};
