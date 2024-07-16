@@ -1,4 +1,6 @@
 import productModel from "../models/productModel.js";
+import { getDataUri } from "../utils/Features.js";
+import cloudinary from "cloudinary";
 
 // GET ALL PRODUCTS
 export const getAllProductsController = async (req, res) => {
@@ -46,6 +48,50 @@ export const getSingleProductController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error while getting product",
+      error,
+    });
+  }
+};
+
+// CREATE PRODUCT
+export const createProductController = async (req, res) => {
+  try {
+    const { name, description, price, category, stock } = req.body;
+    // validation
+    if (!name || !description || !price || !stock) {
+      return res.status(400).send({
+        success: false,
+        message: "Please Enter All Fields",
+      });
+    }
+    if (!req.file) {
+      return res.status(400).send({
+        success: false,
+        message: "Please Select Image",
+      });
+    }
+    const file = getDataUri(req.file);
+    const cdb = await cloudinary.v2.uploader.upload(file.content);
+    const image = {
+      public_id: cgb.public_id,
+      url: cdb.secure_url,
+    };
+    await productModel.create({
+      name,
+      description,
+      price,
+      category,
+      stock,
+      images: [image],
+    });
+    res.status(201).send({
+      success: true,
+      message: "Product Created Successfully",
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error while creating product",
       error,
     });
   }
