@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import cloudinary from "cloudinary";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 // dot env config
 dotenv.config();
@@ -36,6 +37,7 @@ app.use(cookieParser());
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/cat", categoryRoutes);
+app.use("/api/v1/order", orderRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).send("<h1>Hello World</h1>");
