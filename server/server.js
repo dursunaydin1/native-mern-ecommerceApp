@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import cookieParser from "cookie-parser";
 import cloudinary from "cloudinary";
+import productRoutes from "./routes/productRoutes.js";
 
 // dot env config
 dotenv.config();
@@ -32,6 +33,7 @@ app.use(cookieParser());
 
 // route
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/product", productRoutes);
 
 app.get("/", (req, res) => {
   return res.status(200).send("<h1>Hello World</h1>");
