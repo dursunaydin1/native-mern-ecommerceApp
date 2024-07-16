@@ -48,3 +48,62 @@ export const createOrderController = async (req, res) => {
     });
   }
 };
+
+// GET ALL ORDERS
+export const getAllOrdersController = async (req, res) => {
+  try {
+    const orders = await orderModel.find({ user: req.user._id });
+    //   validation
+    if (!orders) {
+      return res.status(404).send({
+        success: false,
+        message: "No Orders Found",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Your Orders Data",
+      totalOrders: orders.length,
+      orders,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error while getting orders",
+      error,
+    });
+  }
+};
+
+// GET SINGLE ORDER
+export const getSingleOrderController = async (req, res) => {
+  try {
+    const order = await orderModel.findById(req.params.id);
+    //   validation
+    if (!order) {
+      return res.status(404).send({
+        success: false,
+        message: "No Order Found",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: "Single Order Data",
+      order,
+    });
+  } catch (error) {
+    // cast error || OBJECT ID ERROR
+    if (error.name === "CastError") {
+      return res.status(500).send({
+        success: false,
+        message: "Invalid Order ID",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error while getting order",
+      error,
+    });
+  }
+};

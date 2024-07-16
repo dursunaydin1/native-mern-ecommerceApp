@@ -1,6 +1,10 @@
 import express from "express";
 import { isAuth } from "./../middleware/authMiddleware.js";
-import { createOrderController } from "../controllers/orderController.js";
+import {
+  createOrderController,
+  getAllOrdersController,
+  getSingleOrderController,
+} from "../controllers/orderController.js";
 
 const router = express.Router();
 
@@ -10,10 +14,10 @@ const router = express.Router();
 router.post("/create", isAuth, createOrderController);
 
 // get all orders
-router.get("/get-all", isAuth, getAllOrdersController);
+router.get("/my-orders", isAuth, getAllOrdersController);
 
 // get single order
-router.get("/get/:id", isAuth, getSingleOrderController);
+router.get("/my-orders/:id", isAuth, getSingleOrderController);
 
 // update order
 router.put("/update/:id", isAuth, updateOrderController);
