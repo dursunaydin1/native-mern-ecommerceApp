@@ -177,3 +177,99 @@ export const updateProductImageController = async (req, res) => {
     });
   }
 };
+
+// DELETE PRODUCT IMAGE
+export const deleteProductImageController = async (req, res) => {
+  try {
+    //   find product
+    const product = await productModel.findById(req.params.id);
+    //   validation
+    if (!product) {
+      return res.status(404).send({
+        success: false,
+        message: "Product Not Found",
+      });
+    }
+    // image id find
+    const id = req.query.id;
+    if (!id) {
+      return res.status(404).send({
+        success: false,
+        message: "Image Not Found",
+      });
+    }
+
+    let isExist = -1;
+    product.images.forEach((image, index) => {
+      if (item._id.toString() === id.toString()) {
+        isExist = index;
+      }
+    });
+
+    if (isExist === -1) {
+      return res.status(404).send({
+        success: false,
+        message: "Image Not Found",
+      });
+    }
+    // delete product image
+
+    await cloudinary.v2.uploader.destroy(product.images[isExist].public_id);
+    product.images.splice(isExist, 1);
+    await product.save();
+    res.status(200).send({
+      success: true,
+      message: "Product Image Deleted Successfully",
+    });
+  } catch (error) {
+    // cast error || OBJECT ID ERROR
+    if (error.name === "CastError") {
+      return res.status(500).send({
+        success: false,
+        message: "Invalid Product ID",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error while deleting product image",
+      error,
+    });
+  }
+};
+
+// DELETE PRODUCT
+export const deleteProductController = async (req, res) => {
+  try {
+    //   find product
+    const product = await productModel.findById(req.params.id);
+    //   validation
+    if (!product) {
+      return res.status(404).send({
+        success: false,
+        message: "Product Not Found",
+      });
+    }
+    // find and delete image cloudinary
+    for (let index = 0; index < product.images.length; index++) {
+      await cloudinary.v2.uploader.destroy(product.images[index].public_id);
+    }
+    await product.deleteOne();
+    res.status(200).send({
+      success: true,
+      message: "Product Deleted Successfully",
+    });
+  } catch (error) {
+    // cast error || OBJECT ID ERROR
+    if (error.name === "CastError") {
+      return res.status(500).send({
+        success: false,
+        message: "Invalid Product ID",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error while deleting product",
+      error,
+    });
+  }
+};
