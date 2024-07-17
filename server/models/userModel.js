@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
         type: String,
       },
     },
+    answer: {
+      type: String,
+      required: [true, "Please Enter Your Answer"],
+    },
     role: {
       type: String,
       default: "user",

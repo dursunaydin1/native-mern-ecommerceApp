@@ -4,7 +4,8 @@ import cloudinary from "cloudinary";
 
 export const registerController = async (req, res) => {
   try {
-    const { name, email, password, address, city, country, phone } = req.body; // phone'u buraya ekledik
+    const { name, email, password, address, city, country, phone, answer } =
+      req.body;
     // check validation
     if (
       !name ||
@@ -13,7 +14,8 @@ export const registerController = async (req, res) => {
       !address ||
       !city ||
       !country ||
-      !phone
+      !phone ||
+      !answer
     ) {
       return res.status(500).send({
         success: false,
@@ -38,6 +40,7 @@ export const registerController = async (req, res) => {
       city,
       country,
       phone,
+      answer,
     });
 
     res.status(201).send({
@@ -247,6 +250,43 @@ export const updateUserProfilePictureController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error while updating profile picture",
+      error,
+    });
+  }
+};
+
+// reset Password
+export const passwordResetController = async (req, res) => {
+  try {
+    // user get email || new password || answer
+    const { email, password, answer } = req.body;
+    // validation
+    if (!email || !password || !answer) {
+      return res.status(400).send({
+        success: false,
+        message: "Please Provide Email, Password & Answer",
+      });
+    }
+    // find user
+    const user = await userModel.findOne({ email, answer });
+    // validation
+    if (!user) {
+      return res.status(400).send({
+        success: false,
+        message: "Invalid Email or Answer",
+      });
+    }
+    user.password = password;
+    await user.save();
+    res.status(200).send({
+      success: true,
+      message: "Password Reset Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error while sending Email",
       error,
     });
   }
