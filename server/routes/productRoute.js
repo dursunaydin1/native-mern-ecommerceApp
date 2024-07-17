@@ -5,6 +5,7 @@ import {
   deleteProductImageController,
   getAllProductsController,
   getSingleProductController,
+  getTopProductsController,
   productReviewController,
   updateProductController,
   updateProductImageController,
@@ -17,6 +18,9 @@ const router = express.Router();
 // routes
 // get all products,
 router.get("/get-all", getAllProductsController);
+
+// get top products,
+router.get("/top", getTopProductsController);
 
 // get single product
 router.get("/:id", getSingleProductController);

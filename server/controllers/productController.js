@@ -4,11 +4,44 @@ import cloudinary from "cloudinary";
 
 // GET ALL PRODUCTS
 export const getAllProductsController = async (req, res) => {
+  const { keyword, category } = req.query;
   try {
-    const products = await productModel.find({});
+    const products = await productModel
+      .find({
+        name: {
+          $regex: keyword,
+          $options: "i",
+        },
+        category: category ? category : null,
+      })
+      .populate("category");
+
     res.status(200).send({
       success: true,
       message: "All Products Fetched Successfully",
+      totalProducts: products.length,
+      products,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error while getting products",
+      error,
+    });
+  }
+};
+// GET TOP Products
+export const getTopProductsController = async (req, res) => {
+  try {
+    const products = await productModel
+      .find({})
+      .sort({ rating: -1 })
+      .limit(3)
+      .populate("category");
+    res.status(200).send({
+      success: true,
+      message: "Top Products Fetched Successfully",
+      totalProducts: products.length,
       products,
     });
   } catch (error) {
