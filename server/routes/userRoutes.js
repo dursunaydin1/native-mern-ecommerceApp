@@ -7,7 +7,7 @@ import {
   updatePasswordController,
   updateUserProfilePictureController,
 } from "../controllers/userController.js";
-import isAuth from "../middleware/authMiddleware.js";
+import { isAuth } from "../middleware/authMiddleware.js";
 import { singleUpload } from "../middleware/multer.js";
 
 // router object

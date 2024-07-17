@@ -19,7 +19,18 @@ const userSchema = new mongoose.Schema(
     city: { type: String, required: [true, "Please Enter Your City"] },
     country: { type: String, required: [true, "Please Enter Your Country"] },
     phone: { type: String, required: [true, "Please Enter Your Phone"] },
-    profilePic: { type: String, url: String },
+    profilePic: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
+    role: {
+      type: String,
+      default: "user",
+    },
   },
   { timestamps: true }
 );

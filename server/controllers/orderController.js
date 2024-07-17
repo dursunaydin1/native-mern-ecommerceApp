@@ -51,7 +51,7 @@ export const createOrderController = async (req, res) => {
 };
 
 // GET ALL ORDERS
-export const getAllOrdersController = async (req, res) => {
+export const getOrdersController = async (req, res) => {
   try {
     const orders = await orderModel.find({ user: req.user._id });
     //   validation
@@ -135,6 +135,74 @@ export const acceptPaymentController = async (req, res) => {
       success: false,
       message: "Error while accepting payment",
       error,
+    });
+  }
+};
+
+//  ==== ADMIN PANEL ROUTES ====
+// GET ALL ORDERS
+export const getAllOrdersController = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+
+    res.status(200).send({
+      success: true,
+      message: "All Orders",
+      totalOrders: orders.length,
+      orders,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error while getting orders",
+      error,
+    });
+  }
+};
+
+// UPDATE ORDER STATUS
+export const updateOrderStatusController = async (req, res) => {
+  try {
+    // find order
+    const order = await orderModel.findById(req.params.id);
+
+    // validation
+    if (!order) {
+      return res.status(404).send({
+        success: false,
+        message: "Order not found with this id",
+      });
+    }
+
+    if (order.orderStatus === "Processing") {
+      order.orderStatus = "Shipped";
+    } else if (order.orderStatus === "Shipped") {
+      order.orderStatus = "Delivered";
+      order.deliveredAt = Date.now();
+    } else {
+      return res.status(400).send({
+        success: false,
+        message: "Order already delivered",
+      });
+    }
+
+    await order.save();
+
+    res.status(200).send({
+      success: true,
+      message: "Order Status Updated Successfully",
+    });
+  } catch (error) {
+    // cast error || OBJECT ID ERROR
+    if (error.name === "CastError") {
+      return res.status(400).send({
+        success: false,
+        message: "Invalid Order ID",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error while updating Order Status",
     });
   }
 };
