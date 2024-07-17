@@ -2,6 +2,7 @@ import orderModel from "../models/orderModel.js";
 import productModel from "../models/productModel.js";
 import { getDataUri } from "../utils/Features.js";
 import cloudinary from "cloudinary";
+import { stripe } from "../server.js";
 
 // CREATE ORDER
 export const createOrderController = async (req, res) => {
@@ -103,6 +104,36 @@ export const getSingleOrderController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error while getting order",
+      error,
+    });
+  }
+};
+
+// ACCEPT PAYMENTS
+export const acceptPaymentController = async (req, res) => {
+  try {
+    // get ampunt
+    const { totalAmount } = req.body;
+    // validation
+    if (!totalAmount) {
+      return res.status(500).send({
+        success: false,
+        message: "Please Enter Total Amount",
+      });
+    }
+    const { client_secret } = await stripe.paymentIntents.create({
+      amount: totalAmount,
+      currency: "usd",
+    });
+    res.status(200).send({
+      success: true,
+      message: "Payment Accepted",
+      client_secret,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error while accepting payment",
       error,
     });
   }

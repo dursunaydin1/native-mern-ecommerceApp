@@ -1,6 +1,7 @@
 import express from "express";
 import { isAuth } from "./../middleware/authMiddleware.js";
 import {
+  acceptPaymentController,
   createOrderController,
   getAllOrdersController,
   getSingleOrderController,
@@ -19,10 +20,7 @@ router.get("/my-orders", isAuth, getAllOrdersController);
 // get single order
 router.get("/my-orders/:id", isAuth, getSingleOrderController);
 
-// update order
-router.put("/update/:id", isAuth, updateOrderController);
-
-// delete order
-router.delete("/delete/:id", isAuth, deleteOrderController);
+// accept payment
+router.post("/accept-payment/:id", isAuth, acceptPaymentController);
 
 export default router;

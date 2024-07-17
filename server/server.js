@@ -10,12 +10,16 @@ import cloudinary from "cloudinary";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import Stripe from "stripe";
 
 // dot env config
 dotenv.config();
 
 // database connection
 connectDB();
+
+// stripe config
+export const stripe = new Stripe(process.env.STRIPE_API_SECRET);
 
 // cloudinary config
 cloudinary.v2.config({
