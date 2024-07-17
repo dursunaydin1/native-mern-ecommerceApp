@@ -273,3 +273,54 @@ export const deleteProductController = async (req, res) => {
     });
   }
 };
+
+// create product review and comment
+export const productReviewController = async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    //  find product
+    const product = await productModel.findById(req.params.id);
+    // create previous review
+    const alreadyReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+    if (alreadyReviewed) {
+      return res.status(400).send({
+        success: false,
+        message: "Already Reviewed",
+      });
+    }
+    // review object
+    const review = {
+      user: req.user._id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+    };
+    // create review
+    product.reviews.push(review);
+    product.numReviews = product.reviews.length;
+    product.rating =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+    // save product
+    await product.save();
+    res.status(200).send({
+      success: true,
+      message: "Review Added Successfully",
+    });
+  } catch (error) {
+    // cast error || OBJECT ID ERROR
+    if (error.name === "CastError") {
+      return res.status(500).send({
+        success: false,
+        message: "Invalid Product ID",
+      });
+    }
+    res.status(500).send({
+      success: false,
+      message: "Error while deleting product",
+      error,
+    });
+  }
+};
