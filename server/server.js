@@ -11,7 +11,8 @@ import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import Stripe from "stripe";
-
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
 // dot env config
 dotenv.config();
 
@@ -32,6 +33,8 @@ cloudinary.v2.config({
 const app = express();
 
 // middleware
+app.use(helmet());
+app.use(mongoSanitize());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
