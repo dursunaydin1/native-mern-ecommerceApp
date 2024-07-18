@@ -1,10 +1,19 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import InputBox from "../../components/Form/InputBox";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+// redux hooks
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/actions/userActions";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // hooks
+  const dispatch = useDispatch();
+
+  // global state
+  const { error, loading, message } = useSelector((state) => state.user);
 
   //   login function
   const handleLogin = () => {
@@ -12,9 +21,21 @@ const Login = ({ navigation }) => {
       alert("Please email and password is required");
       return;
     }
-    alert("Login Successful");
-    navigation.navigate("home");
+    dispatch(login(email, password));
   };
+  // life cycle
+  useEffect(() => {
+    if (error) {
+      alert(error);
+      dispatch({ type: "clearError" });
+    }
+    if (message) {
+      alert(message);
+      navigation.navigate("home");
+      dispatch({ type: "clearMessage" });
+    }
+  }, [error, message, dispatch]);
+
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/login.png")} style={styles.image} />
