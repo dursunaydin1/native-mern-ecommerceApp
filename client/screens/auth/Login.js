@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 // redux hooks
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/userActions";
+import { useReduxStateHook } from "../../hooks/customHook";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -13,7 +14,8 @@ const Login = ({ navigation }) => {
   const dispatch = useDispatch();
 
   // global state
-  const { error, loading, message } = useSelector((state) => state.user);
+  // const { error, loading, message } = useSelector((state) => state.user);
+  const loading = useReduxStateHook(navigation, "home");
 
   //   login function
   const handleLogin = () => {
@@ -24,21 +26,22 @@ const Login = ({ navigation }) => {
     dispatch(login(email, password));
   };
   // life cycle
-  useEffect(() => {
-    if (error) {
-      alert(error);
-      dispatch({ type: "clearError" });
-    }
-    if (message) {
-      alert(message);
-      navigation.navigate("home");
-      dispatch({ type: "clearMessage" });
-    }
-  }, [error, message, dispatch]);
+  // useEffect(() => {
+  //   if (error) {
+  //     alert(error);
+  //     dispatch({ type: "clearError" });
+  //   }
+  //   if (message) {
+  //     alert(message);
+  //     navigation.navigate("home");
+  //     dispatch({ type: "clearMessage" });
+  //   }
+  // }, [error, message, dispatch]);
 
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/login.png")} style={styles.image} />
+      {loading && <Text>Loading...</Text>}
       <InputBox
         placeholder={"Enter Your Email"}
         autoComplete={"email"}

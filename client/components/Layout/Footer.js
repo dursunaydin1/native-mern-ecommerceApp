@@ -2,10 +2,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useReduxStateHook } from "@/hooks/customHook";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/actions/userActions";
 
 const Footer = () => {
   const route = useRoute();
   const navigation = useNavigation();
+  const loading = useReduxStateHook(navigation, (path = "login"));
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -66,8 +71,7 @@ const Footer = () => {
       <TouchableOpacity
         style={styles.menuContainer}
         onPress={() => {
-          alert("Logout Successfully");
-          navigation.navigate("login");
+          dispatch(logout());
         }}
       >
         <AntDesign name="logout" style={styles.icon} />

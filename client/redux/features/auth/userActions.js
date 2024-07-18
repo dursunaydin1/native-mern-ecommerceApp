@@ -28,3 +28,40 @@ export const login = (email, password) => async (dispatch) => {
     });
   }
 };
+
+// Get User Data
+export const getUserData = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "getUserDataRequest",
+    });
+    const { data } = await axios.get(`${server}/user/profile`, {});
+    dispatch({
+      payload: data?.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: "getUserDataFailure",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// logout user
+export const logout = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "logoutRequest",
+    });
+    const { data } = await axios.get(`${server}/user/logout`);
+    dispatch({
+      type: "logoutSuccess",
+      payload: data?.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: "logoutFailure",
+      payload: error.response.data.message,
+    });
+  }
+};
